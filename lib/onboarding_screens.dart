@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:temple_mandhiram/login.dart';
+import 'package:temple_mandhiram/Common/common_button.dart';
+
+import 'login.dart';
 
 class OnBoardingScreens extends StatefulWidget {
   const OnBoardingScreens({Key? key}) : super(key: key);
@@ -152,8 +155,22 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginScreen()));
+                Get.defaultDialog(
+                    titlePadding: const EdgeInsets.all(20),
+                    title: "Developer Warning",
+                    middleText:
+                        "This application is under development you may face some errors\n This dialog will be removed after completion of the project and payment",
+                    actions: [
+                      CommonButton(
+                          text: "Next",
+                          color: Colors.green,
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const LoginScreen()));
+                          })
+                    ]);
               },
               child: const Text(
                 'Continue',
