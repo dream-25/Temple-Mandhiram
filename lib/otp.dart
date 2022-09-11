@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -15,14 +17,12 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-
-  dynamic height,width;
+  dynamic height, width;
   TextEditingController mobile = TextEditingController();
   TextEditingController pass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color(0xff003a00),
     ));
@@ -49,23 +49,35 @@ class _OtpScreenState extends State<OtpScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: height*0.1,),
+                      SizedBox(
+                        height: height * 0.1,
+                      ),
                       // Text('Welcome to our Temple APP',
                       //   textAlign: TextAlign.center,
                       //   style: TextStyle(
                       //   color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold
                       // ),),
-                      Image.asset('assets/new_logo.jpeg',scale: 6,),
-                      SizedBox(height: height*0.07,),
+                      Image.asset(
+                        'assets/new_logo.jpeg',
+                        scale: 6,
+                      ),
+                      SizedBox(
+                        height: height * 0.07,
+                      ),
                       const Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('One Time Password(OTP)',
+                        child: Text(
+                          'One Time Password(OTP)',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold
-                          ),),
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      SizedBox(height: height*0.05,),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
                       CommonTextField(
                         enabled: true,
                         hintText: 'OTP',
@@ -73,25 +85,29 @@ class _OtpScreenState extends State<OtpScreen> {
                         obscure: false,
                         controller: mobile,
                       ),
-                      SizedBox(height: height*0.04,),
+                      SizedBox(
+                        height: height * 0.04,
+                      ),
                       CommonButton(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Dashboard()));
                         },
                         color: Colors.green,
                         text: 'Submit',
-                        width: width*0.9,
+                        width: width * 0.9,
                       ),
-                      SizedBox(height: height*0.01,),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           ),
-        )
-    );
-
+        ));
   }
-
 }

@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dreamapp.temple_mandhiram">
+   <uses-permission android:name="android.permission.INTERNET" /> 
    <application
-        android:label="temple_mandhiram"
+        android:label="Mandhiram"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

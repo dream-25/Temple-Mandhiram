@@ -1,13 +1,21 @@
+// ignore_for_file: library_private_types_in_public_api, must_be_immutable
+
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:temple_mandhiram/25drmcodes/constants/app_constants.dart';
+import 'package:temple_mandhiram/25drmcodes/models/onboardmodel.dart';
 import 'package:temple_mandhiram/Common/common_button.dart';
 
 import 'login.dart';
 
 class OnBoardingScreens extends StatefulWidget {
-  const OnBoardingScreens({Key? key}) : super(key: key);
+  String json;
+  OnBoardingScreens({required this.json, Key? key}) : super(key: key);
 
   @override
   _OnBoardingScreensState createState() => _OnBoardingScreensState();
@@ -29,9 +37,11 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
       statusBarColor: Color(0xffffffff),
     ));
 
+    var onboardScreenModel =
+        OnboardScreenModel.fromJson(json.decode(widget.json));
+
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(bottom: 80),
@@ -51,19 +61,31 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                     width: width * 0.6,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/temp.png',
+                      child: CachedNetworkImage(
                         fit: BoxFit.fill,
+                        imageUrl: onboardScreenModel.message!.first.image!,
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        placeholder: (context, url) => Container(
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: height * 0.06,
                   ),
-                  const Text(
-                    'Introduction',
-                    style: TextStyle(
-                        color: Color(0xff003a00),
+                  Text(
+                    onboardScreenModel.message!.first.heading!,
+                    style: const TextStyle(
+                        color: COLORPRIMARYDARK,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -72,10 +94,10 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                   ),
                   SizedBox(
                     width: width * 0.8,
-                    child: const Text(
-                      'Lorem ipsum dolor sit amet. A provident delectus non minus vero ut eaque explicabo. Et omnis rerum ea optio provident est debitis voluptatibus vel optio quas et dolorem consectetur',
+                    child: Text(
+                      onboardScreenModel.message!.first.description!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff003a00),
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -97,18 +119,30 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                     width: width * 0.6,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/temp.png',
+                      child: CachedNetworkImage(
                         fit: BoxFit.fill,
+                        imageUrl: onboardScreenModel.message![1].image!,
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        placeholder: (context, url) => Container(
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: height * 0.06,
                   ),
-                  const Text(
-                    'Introduction',
-                    style: TextStyle(
+                  Text(
+                    onboardScreenModel.message![1].heading!,
+                    style: const TextStyle(
                         color: Color(0xff003a00),
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
@@ -118,10 +152,10 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                   ),
                   SizedBox(
                     width: width * 0.8,
-                    child: const Text(
-                      'Lorem ipsum dolor sit amet. A provident delectus non minus vero ut eaque explicabo. Et omnis rerum ea optio provident est debitis voluptatibus vel optio quas et dolorem consectetur',
+                    child: Text(
+                      onboardScreenModel.message![1].description!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff003a00),
                           fontSize: 14,
                           fontWeight: FontWeight.w400),

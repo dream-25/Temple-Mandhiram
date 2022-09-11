@@ -1,7 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temple_mandhiram/25drmcodes/constants/app_constants.dart';
-import 'package:temple_mandhiram/onboarding_screens.dart';
+import 'package:temple_mandhiram/main.dart';
 import 'package:temple_mandhiram/profile.dart';
 import 'package:temple_mandhiram/select_lang.dart';
 
@@ -109,9 +111,10 @@ class _SettingScreenState extends State<SettingScreen> {
               block('Access Mode'),
               block('Support'),
               block('Sign Out', onTap: () {
-                getBox.write(isLoggedIn, false);
+                getBox.write(isUserLoggedIn, false);
                 getBox.write(userToken, "");
-                Get.offAll(const OnBoardingScreens());
+                getBox.write(userNumber, "");
+                Get.offAll(const SplashScreen());
               }),
             ],
           ),

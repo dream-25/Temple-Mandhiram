@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -31,40 +33,68 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     var dio = Dio();
-    var body = {"phone": mobile, "password": pass};
+    var body = {
+      "phone": mobile,
+      "isVerified": true,
+    };
     dio.options.headers["authTemple"] = authToken;
     await dio
-        .post("$BASEURL/api/user/login",
+        .put("$BASEURL/api/user/update",
             data: body,
             options: Options(
               validateStatus: (status) => true,
             ))
-        .then((value) {
-      log(json.encode(value.data));
-      log(value.statusCode.toString());
+        .then((value) async {
       setState(() {
         isLoading = false;
       });
       if (value.statusCode == 200) {
-        getBox.write(userToken, value.data["authUser"]);
-        Get.offAll(const Dashboard());
-      } else if (value.statusCode == 404) {
-        Get.showSnackbar(GetSnackBar(
-          backgroundColor: Colors.red,
-          message: value.data["message"],
-          duration: const Duration(milliseconds: 3000),
-        ));
-      } else if (value.statusCode == 400) {
-        Get.showSnackbar(GetSnackBar(
-          backgroundColor: Colors.red,
-          message: value.data["message"],
-          duration: const Duration(milliseconds: 3000),
-        ));
+        var dio = Dio();
+        var body = {"phone": mobile, "password": pass};
+        dio.options.headers["authTemple"] = authToken;
+        await dio
+            .post("$BASEURL/api/user/login",
+                data: body,
+                options: Options(
+                  validateStatus: (status) => true,
+                ))
+            .then((value) {
+          log(json.encode(value.data));
+          log(value.statusCode.toString());
+          setState(() {
+            isLoading = false;
+          });
+          if (value.statusCode == 200) {
+            getBox.write(userToken, value.data["authUser"]);
+            getBox.write(isUserLoggedIn, true);
+            getBox.write(userNumber, mobile);
+
+            Get.offAll(const Dashboard());
+          } else if (value.statusCode == 404) {
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: Colors.red,
+              message: value.data["message"],
+              duration: const Duration(milliseconds: 3000),
+            ));
+          } else if (value.statusCode == 400) {
+            Get.showSnackbar(GetSnackBar(
+              backgroundColor: Colors.red,
+              message: value.data["message"],
+              duration: const Duration(milliseconds: 3000),
+            ));
+          } else {
+            Get.showSnackbar(const GetSnackBar(
+              backgroundColor: Colors.red,
+              message: "Something went wrong",
+              duration: Duration(milliseconds: 3000),
+            ));
+          }
+        });
       } else {
-        Get.showSnackbar(const GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           backgroundColor: Colors.red,
-          message: "Something went wrong",
-          duration: Duration(milliseconds: 3000),
+          message: value.data["message"],
+          duration: const Duration(milliseconds: 3000),
         ));
       }
     });

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 import 'Common/common_button.dart';
@@ -17,6 +19,7 @@ class _AddFamilyScreenState extends State<AddFamilyScreen> {
   TextEditingController location = TextEditingController();
   TextEditingController gotra = TextEditingController();
 
+  // ignore: prefer_typing_uninitialized_variables
   var genderSelected, relationSelected;
   List gender = ['Male', 'Female', 'Other'];
   List relation = ['Me', 'Wife', 'Husband', 'Father', 'Mother', 'Other'];

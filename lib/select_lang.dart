@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class SelectLanguage extends StatefulWidget {
@@ -8,17 +10,13 @@ class SelectLanguage extends StatefulWidget {
 }
 
 class _SelectLanguageState extends State<SelectLanguage> {
-
   int? value;
-  dynamic height,width;
+  dynamic height, width;
 
-  List list = [
-    'English','Hindi','Telugu'
-  ];
+  List list = ['English', 'Hindi', 'Telugu'];
 
   @override
   Widget build(BuildContext context) {
-
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
@@ -32,12 +30,11 @@ class _SelectLanguageState extends State<SelectLanguage> {
         height: height,
         width: width,
         child: ListView.builder(
-
           itemBuilder: (context, index) {
             return RadioListTile(
               value: index,
               groupValue: value,
-              onChanged: (ind) => setState(() => value = ind as int?),
+              onChanged: (ind) => setState(() => value = ind),
               title: Text(list[index]),
             );
           },

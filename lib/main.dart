@@ -1,20 +1,31 @@
-import 'dart:async';
+// ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
+import 'package:temple_mandhiram/25drmcodes/constants/app_constants.dart';
+import 'package:temple_mandhiram/dashboard.dart';
 import 'package:temple_mandhiram/onboarding_screens.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       fontFamily: 'Montserrat',
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xff003a00),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Color(0xff003a00),
-        ),
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarColor: Color(0xff003a00)),
       ),
     ),
     home: const SplashScreen(),
@@ -38,10 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   autoLogin() async {
-    return Timer(
-        const Duration(seconds: 3),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => const OnBoardingScreens())));
+    return Timer(const Duration(seconds: 3), () async {
+      if (getBox.read(isUserLoggedIn) != null &&
+          getBox.read(isUserLoggedIn) == true) {
+        Get.offAll(const Dashboard());
+      } else {
+        var dio = Dio();
+        dio.options.headers["authTemple"] = authToken;
+        await dio.get("$BASEURL/api/welcome/fetchall").then((value) {
+          Get.offAll(OnBoardingScreens(json: json.encode(value.data)));
+        });
+      }
+    });
   }
 
   @override

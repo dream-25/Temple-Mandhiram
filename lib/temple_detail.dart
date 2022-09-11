@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:temple_mandhiram/event_list.dart';
@@ -171,12 +173,7 @@ class _TempleDetailState extends State<TempleDetail> {
                               selectedTodayColor: Colors.red,
                               todayColor: Colors.blue,
                               eventColor: null,
-                              // locale: 'de_DE',
-                              // todayButtonText: 'Heute',
-                              // allDayEventText: 'Ganztägig',
-                              // multiDayEndText: 'Ende',
                               onDateSelected: (date) {
-                                print(date);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
