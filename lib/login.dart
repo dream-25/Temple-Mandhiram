@@ -1,8 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,8 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   validateStatus: (status) => true,
                 ))
             .then((value) {
-          log(json.encode(value.data));
-          log(value.statusCode.toString());
           setState(() {
             isLoading = false;
           });

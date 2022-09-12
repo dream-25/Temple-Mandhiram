@@ -1,7 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
@@ -100,7 +98,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   validateStatus: (status) => true,
                                 ))
                             .then((value) {
-                          log(json.encode(value.data));
                           setState(() {
                             isLoading = false;
                           });

@@ -1,11 +1,16 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:temple_mandhiram/25drmcodes/constants/app_constants.dart';
 import 'package:temple_mandhiram/main.dart';
 import 'package:temple_mandhiram/profile.dart';
 import 'package:temple_mandhiram/select_lang.dart';
+
+import '25drmcodes/models/profilemodel.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -21,6 +26,13 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+    Clipboard.setData(ClipboardData(text: getBox.read(userToken)));
+    Future<ProfileModel> profileData() async {
+      var dio = Dio();
+      dio.options.headers["authUser"] = getBox.read(userToken);
+      var result = await dio.get("$BASEURL/api/user/fetch");
+      return ProfileModel.fromJson(result.data);
+    }
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -48,47 +60,99 @@ class _SettingScreenState extends State<SettingScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              Container(
-                height: height * 0.25,
-                width: width,
-                color: const Color(0xff003a00),
-                child: Column(
-                  children: const [
-                    SizedBox(
-                      height: 15,
-                    ),
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 45,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 43,
-                        backgroundImage: AssetImage('assets/person-icon.png'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      'Tanu Agarwal',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      '+911234567890',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white60),
-                    ),
-                  ],
-                ),
-              ),
+              FutureBuilder(
+                  future: profileData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.data != null) {
+                      return Container(
+                        height: height * 0.25,
+                        width: width,
+                        color: const Color(0xff003a00),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 45,
+                              child: (snapshot.data!.message!.image! != "")
+                                  ? CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      imageUrl: snapshot.data!.message!.image!)
+                                  : Center(
+                                      child:
+                                          Image.asset('assets/person-icon.png'),
+                                    ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              snapshot.data!.message!.name!,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              '+91${snapshot.data!.message!.phone}',
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white60),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        height: height * 0.25,
+                        width: width,
+                        color: const Color(0xff003a00),
+                        child: Column(
+                          children: const [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 45,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 43,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              '',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              '',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white60),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  }),
               const SizedBox(
                 height: 15,
               ),

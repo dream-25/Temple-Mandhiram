@@ -37,12 +37,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900, 8),
-        lastDate: DateTime(2101));
-    if (picked != null) {
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900, 8),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null &&
+        (DateTime.now().millisecondsSinceEpoch -
+                picked.millisecondsSinceEpoch) >
+            410240376000) {
       dob.text = "${picked.year}-${picked.month}-${picked.day}";
+    } else {
+      Get.showSnackbar(const GetSnackBar(
+        backgroundColor: Colors.red,
+        message: "You have to be atleast 13 years old",
+        duration: Duration(milliseconds: 3000),
+      ));
     }
   }
 
