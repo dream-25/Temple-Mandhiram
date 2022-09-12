@@ -39,7 +39,6 @@ class Message {
     this.image,
     this.openingTime,
     this.closingTime,
-    this.events,
     this.v,
   });
 
@@ -50,7 +49,6 @@ class Message {
   String? image;
   int? openingTime;
   int? closingTime;
-  List<dynamic>? events;
   int? v;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
@@ -61,7 +59,6 @@ class Message {
         image: json["image"],
         openingTime: json["openingTime"],
         closingTime: json["closingTime"],
-        events: List<dynamic>.from(json["events"].map((x) => x)),
         v: json["__v"],
       );
 
@@ -73,7 +70,6 @@ class Message {
         "image": image,
         "openingTime": openingTime,
         "closingTime": closingTime,
-        "events": List<dynamic>.from(events!.map((x) => x)),
         "__v": v,
       };
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +37,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
       var dio = Dio();
       dio.options.headers["authTemple"] = authToken;
       var result = await dio.get("$BASEURL/api/temple/fetchall");
+      log(json.encode(result.data));
       return TempleModel.fromJson(result.data);
     }
 

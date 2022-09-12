@@ -14,9 +14,10 @@ class BlogModel {
   List<Message>? message;
 
   factory BlogModel.fromJson(Map<String, dynamic> json) => BlogModel(
-      success: json["success"],
-      message:
-          List<Message>.from(json["message"].map((x) => Message.fromJson(x))));
+        success: json["success"],
+        message:
+            List<Message>.from(json["message"].map((x) => Message.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
         "success": success,
@@ -37,6 +38,7 @@ class Message {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.isLiked,
   });
 
   String? id;
@@ -50,6 +52,7 @@ class Message {
   int? createdAt;
   int? updatedAt;
   int? v;
+  int? isLiked;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         id: json["_id"],
@@ -63,6 +66,7 @@ class Message {
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
         v: json["__v"],
+        isLiked: json["isLiked"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -77,5 +81,6 @@ class Message {
         "createdAt": createdAt,
         "updatedAt": updatedAt,
         "__v": v,
+        "isLiked": isLiked,
       };
 }
