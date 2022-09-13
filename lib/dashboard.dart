@@ -1,8 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:temple_mandhiram/home_new_screen.dart';
 import 'package:temple_mandhiram/setting.dart';
+import 'package:temple_mandhiram/temple.dart';
 
 import 'blog.dart';
 
@@ -17,7 +17,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
   final List _widgetOptions = [
     const BlogScreen(),
-    const HomeNewScreen(),
+    const TempleScreen(),
     const SettingScreen(),
   ];
 
