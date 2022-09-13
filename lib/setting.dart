@@ -74,18 +74,20 @@ class _SettingScreenState extends State<SettingScreen> {
                             const SizedBox(
                               height: 15,
                             ),
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 45,
-                              child: (snapshot.data!.message!.image! != "")
-                                  ? CachedNetworkImage(
-                                      fit: BoxFit.fill,
-                                      imageUrl: snapshot.data!.message!.image!)
-                                  : Center(
-                                      child:
-                                          Image.asset('assets/person-icon.png'),
-                                    ),
-                            ),
+                            (snapshot.data!.message == null ||
+                                    snapshot.data!.message!.image! != "")
+                                ? CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 45,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        snapshot.data!.message!.image!),
+                                  )
+                                : const CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 45,
+                                    backgroundImage:
+                                        AssetImage('assets/person-icon.png'),
+                                  ),
                             const SizedBox(
                               height: 15,
                             ),

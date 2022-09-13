@@ -93,21 +93,24 @@ class BlogController extends GetxController {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const SizedBox(width: 6),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 20,
-                                child: (commentModel
-                                            .value.message![index].image! !=
-                                        "")
-                                    ? CachedNetworkImage(
-                                        fit: BoxFit.fill,
-                                        imageUrl: commentModel
-                                            .value.message![index].image!)
-                                    : Center(
-                                        child: Image.asset(
-                                            'assets/person-icon.png'),
-                                      ),
-                              ),
+                              (commentModel.value.message == null ||
+                                      commentModel
+                                              .value.message![index].image! !=
+                                          "")
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 20,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              commentModel.value.message![index]
+                                                  .image!),
+                                    )
+                                  : const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 20,
+                                      backgroundImage:
+                                          AssetImage('assets/person-icon.png'),
+                                    ),
                               const SizedBox(width: 12),
                               Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -177,7 +180,7 @@ class BlogController extends GetxController {
     ));
 
     var dio = Dio();
-    dio.options.headers["authTemple"] = authToken;
+    dio.options.headers["authUser"] = getBox.read(userToken);
     await dio.post("$BASEURL/api/blog/comment", data: {"blogId": blogID}).then(
       (value) => commentModel.update(
         (val) {
@@ -216,21 +219,22 @@ class BlogController extends GetxController {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const SizedBox(width: 6),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 20,
-                                child:
-                                    (likeModel.value.message![index].image! !=
-                                            "")
-                                        ? CachedNetworkImage(
-                                            fit: BoxFit.fill,
-                                            imageUrl: likeModel
-                                                .value.message![index].image!)
-                                        : Center(
-                                            child: Image.asset(
-                                                'assets/person-icon.png'),
-                                          ),
-                              ),
+                              (likeModel.value.message == null ||
+                                      likeModel.value.message![index].image! !=
+                                          "")
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 20,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(likeModel
+                                              .value.message![index].image!),
+                                    )
+                                  : const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 20,
+                                      backgroundImage:
+                                          AssetImage('assets/person-icon.png'),
+                                    ),
                               const SizedBox(width: 12),
                               Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -277,7 +281,7 @@ class BlogController extends GetxController {
     var dio = Dio();
     dio.options.headers["authTemple"] = authToken;
     await dio.post("$BASEURL/api/blog/like", data: {"blogId": blogID}).then(
-      (value) => commentModel.update(
+      (value) => likeModel.update(
         (val) {
           likeModel = LikeModel.fromJson(value.data).obs;
         },

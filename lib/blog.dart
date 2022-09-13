@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
@@ -68,6 +69,9 @@ class _BlogScreenState extends State<BlogScreen> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
+                          Clipboard.setData(ClipboardData(
+                              text: controller
+                                  .blogModel.value.message![index].id!));
                           Get.to(SingleBlog(
                               blogID: controller
                                   .blogModel.value.message![index].id!));

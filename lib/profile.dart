@@ -3,12 +3,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:temple_mandhiram/25drmcodes/screens/updateprofile.dart';
 import 'package:temple_mandhiram/Common/common_text_field.dart';
 import 'package:temple_mandhiram/add_family_member.dart';
 
 import '25drmcodes/constants/app_constants.dart';
 import '25drmcodes/contollers/profilecontroller.dart';
-import 'Common/common_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -55,144 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        dynamic height, width;
-                        TextEditingController mobile = TextEditingController();
-                        TextEditingController name = TextEditingController();
-                        TextEditingController dob = TextEditingController();
-                        var isLoading = false;
-                        mobile.text =
-                            controller.profileModel.value.message!.phone!;
-                        name.text =
-                            controller.profileModel.value.message!.name!;
-                        dob.text =
-                            "${controller.profileModel.value.message!.birthDate!.year}-${controller.profileModel.value.message!.birthDate!.month}-${controller.profileModel.value.message!.birthDate!.day}";
-
-                        Future<void> selectDate(BuildContext context) async {
-                          final DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900, 8),
-                              lastDate: DateTime(2101));
-                          if (picked != null) {
-                            dob.text =
-                                "${picked.year}-${picked.month}-${picked.day}";
-                          }
-                        }
-
-                        void updateUser() {}
-                        height = Get.height;
-                        width = Get.width;
-                        Get.dialog(Scaffold(
-                            backgroundColor: const Color(0xff003a00),
-                            body: SafeArea(
-                                child: Stack(
-                              children: [
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: height * 0.05,
-                                      ),
-                                      CommonTextField(
-                                        enabled: true,
-                                        hintText: 'Name',
-                                        textInputType: TextInputType.text,
-                                        obscure: false,
-                                        controller: name,
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.03,
-                                      ),
-                                      CommonTextField(
-                                        enabled: true,
-                                        hintText: 'Mobile number',
-                                        textInputType: TextInputType.number,
-                                        obscure: false,
-                                        controller: mobile,
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.03,
-                                      ),
-                                      InkWell(
-                                        onTap: () => selectDate(context),
-                                        child: CommonTextField(
-                                          enabled: false,
-                                          hintText: 'Date of Birth',
-                                          textInputType: TextInputType.text,
-                                          obscure: false,
-                                          controller: dob,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.03,
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.04,
-                                      ),
-                                      CommonButton(
-                                        onTap: () {
-                                          if (name.text.length > 3) {
-                                            if (mobile.text.length == 10) {
-                                              if (dob.text.isNotEmpty) {
-                                                updateUser();
-                                                setState(() {
-                                                  isLoading = true;
-                                                });
-                                              } else {
-                                                Get.showSnackbar(
-                                                    const GetSnackBar(
-                                                  backgroundColor: Colors.red,
-                                                  message:
-                                                      "Please enter a valid DOB",
-                                                  duration: Duration(
-                                                      milliseconds: 3000),
-                                                ));
-                                              }
-                                            } else {
-                                              Get.showSnackbar(
-                                                  const GetSnackBar(
-                                                backgroundColor: Colors.red,
-                                                message:
-                                                    "Please enter a valid Number",
-                                                duration: Duration(
-                                                    milliseconds: 3000),
-                                              ));
-                                            }
-                                          } else {
-                                            Get.showSnackbar(const GetSnackBar(
-                                              backgroundColor: Colors.red,
-                                              message:
-                                                  "Please enter a valid Name",
-                                              duration:
-                                                  Duration(milliseconds: 3000),
-                                            ));
-                                          }
-                                        },
-                                        color: Colors.green,
-                                        text: 'Update',
-                                        width: width * 0.9,
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: isLoading,
-                                  child: Container(
-                                    height: Get.height,
-                                    width: Get.width,
-                                    color: Colors.black.withOpacity(0.5),
-                                    child: const Center(
-                                        child: CircularProgressIndicator(
-                                      color: Colors.green,
-                                      strokeWidth: 7,
-                                    )),
-                                  ),
-                                ),
-                              ],
-                            ))));
+                        Get.to(const UpdateProfile());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
