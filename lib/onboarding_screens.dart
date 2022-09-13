@@ -189,22 +189,23 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             ),
             TextButton(
               onPressed: () {
-                Get.defaultDialog(
-                    titlePadding: const EdgeInsets.all(20),
-                    title: "Developer Warning",
-                    middleText:
-                        "This application is under development you may face some errors\n This dialog will be removed after completion of the project and payment",
-                    actions: [
-                      CommonButton(
-                          text: "Next",
-                          color: Colors.green,
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const LoginScreen()));
-                          })
-                    ]);
+                if (true) {
+                  Get.defaultDialog(
+                      titlePadding: const EdgeInsets.all(20),
+                      title: "Developer Warning",
+                      middleText:
+                          "This application is under development you may face some errors\n This dialog will be removed after completion of the project and payment",
+                      actions: [
+                        CommonButton(
+                            text: "Next",
+                            color: Colors.green,
+                            onTap: () {
+                              Get.to(const LoginScreen());
+                            })
+                      ]);
+                } else {
+                  Get.to(const LoginScreen());
+                }
               },
               child: const Text(
                 'Continue',
