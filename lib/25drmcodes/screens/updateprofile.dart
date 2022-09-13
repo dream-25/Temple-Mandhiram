@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -109,30 +107,69 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     CommonButton(
                       onTap: () async {
                         if (controller.userName.text.length > 3) {
-                          dio.FormData formData = dio.FormData.fromMap({
-                            "image": await dio.MultipartFile.fromFile(
-                                image!.path,
-                                filename: image!.path.split('/').last,
-                                contentType: MediaType('image', 'png')),
-                            "name": controller.userName.text
+                          controller.isUpdateProfileLoading.update((val) {
+                            controller.isUpdateProfileLoading = true.obs;
                           });
+                          if (image != null) {
+                            dio.FormData formData = dio.FormData.fromMap({
+                              "image": await dio.MultipartFile.fromFile(
+                                  image!.path,
+                                  filename: image!.path.split('/').last,
+                                  contentType: MediaType('image', 'png')),
+                              "name": controller.userName.text
+                            });
 
-                          var myDio = dio.Dio();
-                          myDio.options.headers["authUser"] =
-                              getBox.read(userToken);
-                          myDio.options.headers["Content-Type"] =
-                              "multipart/form-data";
-                          await myDio
-                              .put(
-                            "$BASEURL/api/user/updateuser",
-                            data: formData,
-                            options: dio.Options(
-                              validateStatus: (status) => true,
-                            ),
-                          )
-                              .then((value) {
-                            log(json.encode(value.data));
-                          });
+                            var myDio = dio.Dio();
+                            myDio.options.headers["authUser"] =
+                                getBox.read(userToken);
+                            myDio.options.headers["Content-Type"] =
+                                "multipart/form-data";
+                            await myDio
+                                .put(
+                              "$BASEURL/api/user/updateuser",
+                              data: formData,
+                              options: dio.Options(
+                                validateStatus: (status) => true,
+                              ),
+                            )
+                                .then((value) {
+                              controller.isUpdateProfileLoading.update((val) {
+                                controller.isUpdateProfileLoading = false.obs;
+                              });
+                              if (value.statusCode == 200) {
+                                Get.showSnackbar(const GetSnackBar(
+                                  backgroundColor: Colors.green,
+                                  message: "Profile updated",
+                                  duration: Duration(milliseconds: 3000),
+                                ));
+                              }
+                            });
+                          } else {
+                            var myDio = dio.Dio();
+                            myDio.options.headers["authUser"] =
+                                getBox.read(userToken);
+
+                            await myDio
+                                .put(
+                              "$BASEURL/api/user/updateuser",
+                              data: {"name": controller.userName.text},
+                              options: dio.Options(
+                                validateStatus: (status) => true,
+                              ),
+                            )
+                                .then((value) {
+                              controller.isUpdateProfileLoading.update((val) {
+                                controller.isUpdateProfileLoading = false.obs;
+                              });
+                              if (value.statusCode == 200) {
+                                Get.showSnackbar(const GetSnackBar(
+                                  backgroundColor: Colors.green,
+                                  message: "Profile updated",
+                                  duration: Duration(milliseconds: 3000),
+                                ));
+                              }
+                            });
+                          }
                         } else {
                           Get.showSnackbar(const GetSnackBar(
                             backgroundColor: Colors.red,
