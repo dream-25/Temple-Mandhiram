@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:temple_mandhiram/25drmcodes/constants/app_constants.dart';
 import 'package:temple_mandhiram/25drmcodes/models/onboardmodel.dart';
-import 'package:temple_mandhiram/Common/common_button.dart';
 
+import 'Common/common_button.dart';
 import 'login.dart';
 
 class OnBoardingScreens extends StatefulWidget {
